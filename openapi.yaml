@@ -40,16 +40,16 @@ info:
 
     <SecurityDefinitions />
 
-  version: 1.0.0
-  title: Swagger Petstore
+  version: 0.0.2
+  title: Synofin Financials
   termsOfService: "http://swagger.io/terms/"
   contact:
     name: API Support
-    email: apiteam@swagger.io
+    email: karan.sharma@synoriq.in
     url: https://github.com/Redocly/redoc
   x-logo:
-    url: "https://redocly.github.io/redoc/petstore-logo.png"
-    altText: Petstore logo
+    url: "https://static.wixstatic.com/media/7e8210_fbc53a3edc0245ed8871597892e412d1~mv2.png/v1/fill/w_199,h_41,al_c,q_85,usm_0.66_1.00_0.01/7e8210_fbc53a3edc0245ed8871597892e412d1~mv2.webp"
+    altText: Company logo
   license:
     name: Apache 2.0
     url: "http://www.apache.org/licenses/LICENSE-2.0.html"
@@ -177,15 +177,15 @@ paths:
             }
       requestBody:
         $ref: "#/components/requestBodies/loan"
-  "/loan/{petId}":
+  "/loan/loan_details/{loanId}":
     get:
       tags:
         - loan
-      summary: Find loan by ID
+      summary: Find loan details by ID
       description: Returns a single loan
-      operationId: getPetById
+      operationId: getLoanDetails
       parameters:
-        - name: petId
+        - name: loanId
           in: path
           description: ID of loan to return
           required: true
@@ -207,69 +207,12 @@ paths:
           description: Invalid ID supplied
         "404":
           description: loan not found
+        "503":
+          description: internel error
+
       security:
         - api_key: []
-    post:
-      tags:
-        - loan
-      summary: Updates a loan in the store with form data
-      description: ""
-      operationId: updatePetWithForm
-      parameters:
-        - name: petId
-          in: path
-          description: ID of loan that needs to be updated
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        "405":
-          description: Invalid input
-      security:
-        - petstore_auth:
-            - "write:pets"
-            - "read:pets"
-      requestBody:
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              properties:
-                name:
-                  description: Updated name of the loan
-                  type: string
-                status:
-                  description: Updated status of the loan
-                  type: string
-    delete:
-      tags:
-        - loan
-      summary: Deletes a loan
-      description: ""
-      operationId: deletePet
-      parameters:
-        - name: api_key
-          in: header
-          required: false
-          schema:
-            type: string
-          example: "Bearer <TOKEN>"
-        - name: petId
-          in: path
-          description: loan id to delete
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        "400":
-          description: Invalid loan value
-      security:
-        - petstore_auth:
-            - "write:pets"
-            - "read:pets"
-  "/loan/{petId}/uploadImage":
+    "/loan/{petId}/uploadImage":
     post:
       tags:
         - loan
