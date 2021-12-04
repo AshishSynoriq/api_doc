@@ -40,33 +40,33 @@ info:
 
     <SecurityDefinitions />
 
-  version: 0.0.2
-  title: Synofin Financials
-  termsOfService: "http://swagger.io/terms/"
+  version: 1.0.0
+  title: Swagger Petstore
+  termsOfService: 'http://swagger.io/terms/'
   contact:
     name: API Support
-    email: karan.sharma@synoriq.in
+    email: apiteam@swagger.io
     url: https://github.com/Redocly/redoc
   x-logo:
-    url: "https://static.wixstatic.com/media/7e8210_fbc53a3edc0245ed8871597892e412d1~mv2.png/v1/fill/w_199,h_41,al_c,q_85,usm_0.66_1.00_0.01/7e8210_fbc53a3edc0245ed8871597892e412d1~mv2.webp"
-    altText: Company logo
+    url: 'https://redocly.github.io/redoc/petstore-logo.png'
+    altText: Petstore logo
   license:
     name: Apache 2.0
-    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
 externalDocs:
   description: Find out how to create Github repo for your OpenAPI spec.
-  url: "https://github.com/Rebilly/generator-openapi-repo"
+  url: 'https://github.com/Rebilly/generator-openapi-repo'
 tags:
-  - name: loan
+  - name: pet
     description: Everything about your Pets
   - name: store
     description: Access to Petstore orders
   - name: user
     description: Operations about user
   - name: pet_model
-    x-displayName: The loan Model
+    x-displayName: The Pet Model
     description: |
-      <SchemaDefinition schemaRef="#/components/schemas/loan" />
+      <SchemaDefinition schemaRef="#/components/schemas/Pet" />
   - name: store_model
     x-displayName: The Order Model
     description: |
@@ -74,7 +74,7 @@ tags:
 x-tagGroups:
   - name: General
     tags:
-      - loan
+      - pet
       - store
   - name: User Management
     tags:
@@ -84,7 +84,7 @@ x-tagGroups:
       - pet_model
       - store_model
 paths:
-  /loan:
+  /pet:
     parameters:
       - name: Accept-Language
         in: header
@@ -103,26 +103,26 @@ paths:
           format: int64
     post:
       tags:
-        - loan
-      summary: Add a new loan to the store
-      description: Add new loan to the store inventory.
+        - pet
+      summary: Add a new pet to the store
+      description: Add new pet to the store inventory.
       operationId: addPet
       responses:
-        "405":
+        '405':
           description: Invalid input
       security:
         - petstore_auth:
-            - "write:pets"
-            - "read:pets"
+            - 'write:pets'
+            - 'read:pets'
       x-codeSamples:
-        - lang: "C#"
+        - lang: 'C#'
           source: |
-            PetStore.v1.loan loan = new PetStore.v1.loan();
-            loan.setApiKey("your api key");
-            loan.petType = PetStore.v1.loan.TYPE_DOG;
-            loan.name = "Rex";
+            PetStore.v1.Pet pet = new PetStore.v1.Pet();
+            pet.setApiKey("your api key");
+            pet.petType = PetStore.v1.Pet.TYPE_DOG;
+            pet.name = "Rex";
             // set other fields
-            PetStoreResponse response = loan.create();
+            PetStoreResponse response = pet.create();
             if (response.statusCode == HttpStatusCode.Created)
             {
               // Successfully created
@@ -134,120 +134,177 @@ paths:
             }
         - lang: PHP
           source: |
-            $form = new \PetStore\Entities\loan();
+            $form = new \PetStore\Entities\Pet();
             $form->setPetType("Dog");
             $form->setName("Rex");
             // set other fields
             try {
-                $loan = $client->pets()->create($form);
+                $pet = $client->pets()->create($form);
             } catch (UnprocessableEntityException $e) {
                 var_dump($e->getErrors());
             }
       requestBody:
-        $ref: "#/components/requestBodies/loan"
+        $ref: '#/components/requestBodies/Pet'
     put:
       tags:
-        - loan
-      summary: Update an existing loan
-      description: ""
+        - pet
+      summary: Update an existing pet
+      description: ''
       operationId: updatePet
       responses:
-        "400":
+        '400':
           description: Invalid ID supplied
-        "404":
-          description: loan not found
-        "405":
+        '404':
+          description: Pet not found
+        '405':
           description: Validation exception
       security:
         - petstore_auth:
-            - "write:pets"
-            - "read:pets"
+            - 'write:pets'
+            - 'read:pets'
       x-codeSamples:
         - lang: PHP
           source: |
-            $form = new \PetStore\Entities\loan();
+            $form = new \PetStore\Entities\Pet();
             $form->setPetId(1);
             $form->setPetType("Dog");
             $form->setName("Rex");
             // set other fields
             try {
-                $loan = $client->pets()->update($form);
+                $pet = $client->pets()->update($form);
             } catch (UnprocessableEntityException $e) {
                 var_dump($e->getErrors());
             }
       requestBody:
-        $ref: "#/components/requestBodies/loan"
-  "/loan/loan_details/{loanId}":
+        $ref: '#/components/requestBodies/Pet'
+  '/pet/{petId}':
     get:
       tags:
-        - loan
-      summary: Find loan details by ID
-      description: Returns a single loan
-      operationId: getLoanDetails
+        - pet
+      summary: Find pet by ID
+      description: Returns a single pet
+      operationId: getPetById
       parameters:
-        - name: loanId
+        - name: petId
           in: path
-          description: ID of loan to return
+          description: ID of pet to return
           required: true
           deprecated: true
           schema:
             type: integer
             format: int64
       responses:
-        "200":
+        '200':
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/loan"
+                $ref: '#/components/schemas/Pet'
             application/xml:
               schema:
-                $ref: "#/components/schemas/loan"
-        "400":
+                $ref: '#/components/schemas/Pet'
+        '400':
           description: Invalid ID supplied
-        "404":
-          description: loan not found
-        "503":
-          description: internel error
-
+        '404':
+          description: Pet not found
       security:
         - api_key: []
-    "/loan/{petId}/uploadImage":
     post:
       tags:
-        - loan
-      summary: uploads an image
-      description: ""
-      operationId: uploadFile
+        - pet
+      summary: Updates a pet in the store with form data
+      description: ''
+      operationId: updatePetWithForm
       parameters:
         - name: petId
           in: path
-          description: ID of loan to update
+          description: ID of pet that needs to be updated
           required: true
           schema:
             type: integer
             format: int64
       responses:
-        "200":
+        '405':
+          description: Invalid input
+      security:
+        - petstore_auth:
+            - 'write:pets'
+            - 'read:pets'
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:
+                  description: Updated name of the pet
+                  type: string
+                status:
+                  description: Updated status of the pet
+                  type: string
+    delete:
+      tags:
+        - pet
+      summary: Deletes a pet
+      description: ''
+      operationId: deletePet
+      parameters:
+        - name: api_key
+          in: header
+          required: false
+          schema:
+            type: string
+          example: "Bearer <TOKEN>"
+        - name: petId
+          in: path
+          description: Pet id to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '400':
+          description: Invalid pet value
+      security:
+        - petstore_auth:
+            - 'write:pets'
+            - 'read:pets'
+  '/pet/{petId}/uploadImage':
+    post:
+      tags:
+        - pet
+      summary: uploads an image
+      description: ''
+      operationId: uploadFile
+      parameters:
+        - name: petId
+          in: path
+          description: ID of pet to update
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ApiResponse"
+                $ref: '#/components/schemas/ApiResponse'
       security:
         - petstore_auth:
-            - "write:pets"
-            - "read:pets"
+            - 'write:pets'
+            - 'read:pets'
       requestBody:
         content:
           application/octet-stream:
             schema:
               type: string
               format: binary
-  /loan/findByStatus:
+  /pet/findByStatus:
     get:
       tags:
-        - loan
+        - pet
       summary: Finds Pets by status
       description: Multiple status values can be provided with comma separated strings
       operationId: findPetsByStatus
@@ -269,29 +326,29 @@ paths:
                 - sold
               default: available
       responses:
-        "200":
+        '200':
           description: successful operation
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/loan"
+                  $ref: '#/components/schemas/Pet'
             application/xml:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/loan"
-        "400":
+                  $ref: '#/components/schemas/Pet'
+        '400':
           description: Invalid status value
       security:
         - petstore_auth:
-            - "write:pets"
-            - "read:pets"
-  /loan/findByTags:
+            - 'write:pets'
+            - 'read:pets'
+  /pet/findByTags:
     get:
       tags:
-        - loan
+        - pet
       summary: Finds Pets by tags
       description: >-
         Multiple tags can be provided with comma separated strings. Use tag1,
@@ -309,34 +366,34 @@ paths:
             items:
               type: string
       responses:
-        "200":
+        '200':
           description: successful operation
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/loan"
+                  $ref: '#/components/schemas/Pet'
             application/xml:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/loan"
-        "400":
+                  $ref: '#/components/schemas/Pet'
+        '400':
           description: Invalid tag value
       security:
         - petstore_auth:
-            - "write:pets"
-            - "read:pets"
+            - 'write:pets'
+            - 'read:pets'
   /store/inventory:
     get:
       tags:
         - store
-      summary: Returns loan inventories by status
+      summary: Returns pet inventories by status
       description: Returns a map of status codes to quantities
       operationId: getInventory
       responses:
-        "200":
+        '200':
           description: successful operation
           content:
             application/json:
@@ -351,20 +408,20 @@ paths:
     post:
       tags:
         - store
-      summary: Place an order for a loan
-      description: ""
+      summary: Place an order for a pet
+      description: ''
       operationId: placeOrder
       responses:
-        "200":
+        '200':
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Order"
+                $ref: '#/components/schemas/Order'
             application/xml:
               schema:
-                $ref: "#/components/schemas/Order"
-        "400":
+                $ref: '#/components/schemas/Order'
+        '400':
           description: Invalid Order
           content:
             application/json:
@@ -375,10 +432,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Order"
-        description: order placed for purchasing the loan
+              $ref: '#/components/schemas/Order'
+        description: order placed for purchasing the pet
         required: true
-  "/store/order/{orderId}":
+  '/store/order/{orderId}':
     get:
       tags:
         - store
@@ -390,7 +447,7 @@ paths:
       parameters:
         - name: orderId
           in: path
-          description: ID of loan that needs to be fetched
+          description: ID of pet that needs to be fetched
           required: true
           schema:
             type: integer
@@ -398,18 +455,18 @@ paths:
             minimum: 1
             maximum: 5
       responses:
-        "200":
+        '200':
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Order"
+                $ref: '#/components/schemas/Order'
             application/xml:
               schema:
-                $ref: "#/components/schemas/Order"
-        "400":
+                $ref: '#/components/schemas/Order'
+        '400':
           description: Invalid ID supplied
-        "404":
+        '404':
           description: Order not found
     delete:
       tags:
@@ -428,9 +485,9 @@ paths:
             type: string
             minimum: 1
       responses:
-        "400":
+        '400':
           description: Invalid ID supplied
-        "404":
+        '404':
           description: Order not found
   /store/subscribe:
     post:
@@ -461,7 +518,7 @@ paths:
                 - callbackUrl
                 - eventName
       responses:
-        "201":
+        '201':
           description: Subscription added
           content:
             application/json:
@@ -473,7 +530,7 @@ paths:
                     example: AAA-123-BBB-456
       callbacks:
         orderInProgress:
-          "{$request.body#/callbackUrl}?event={$request.body#/eventName}":
+          '{$request.body#/callbackUrl}?event={$request.body#/eventName}':
             servers:
               - url: //callback-url.path-level/v1
                 description: Path level server 1
@@ -484,7 +541,7 @@ paths:
               description: A callback triggered every time an Order is updated status to "inProgress" (Description)
               externalDocs:
                 description: Find out more
-                url: "https://more-details.com/demo"
+                url: 'https://more-details.com/demo'
               requestBody:
                 content:
                   application/json:
@@ -493,21 +550,21 @@ paths:
                       properties:
                         orderId:
                           type: string
-                          example: "123"
+                          example: '123'
                         timestamp:
                           type: string
                           format: date-time
-                          example: "2018-10-19T16:46:45Z"
+                          example: '2018-10-19T16:46:45Z'
                         status:
                           type: string
-                          example: "inProgress"
+                          example: 'inProgress'
                   application/xml:
                     schema:
                       type: object
                       properties:
                         orderId:
                           type: string
-                          example: "123"
+                          example: '123'
                     example: |
                       <?xml version="1.0" encoding="UTF-8"?>
                       <root>
@@ -516,7 +573,7 @@ paths:
                         <timestamp>2018-10-19T16:46:45Z</timestamp>
                       </root>
               responses:
-                "200":
+                '200':
                   description: Callback successfully processed and no retries will be performed
                   content:
                     application/json:
@@ -525,20 +582,20 @@ paths:
                         properties:
                           someProp:
                             type: string
-                            example: "123"
-                "299":
+                            example: '123'
+                '299':
                   description: Response for cancelling subscription
-                "500":
+                '500':
                   description: Callback processing failed and retries will be performed
               x-codeSamples:
-                - lang: "C#"
+                - lang: 'C#'
                   source: |
-                    PetStore.v1.loan loan = new PetStore.v1.loan();
-                    loan.setApiKey("your api key");
-                    loan.petType = PetStore.v1.loan.TYPE_DOG;
-                    loan.name = "Rex";
+                    PetStore.v1.Pet pet = new PetStore.v1.Pet();
+                    pet.setApiKey("your api key");
+                    pet.petType = PetStore.v1.Pet.TYPE_DOG;
+                    pet.name = "Rex";
                     // set other fields
-                    PetStoreResponse response = loan.create();
+                    PetStoreResponse response = pet.create();
                     if (response.statusCode == HttpStatusCode.Created)
                     {
                       // Successfully created
@@ -550,12 +607,12 @@ paths:
                     }
                 - lang: PHP
                   source: |
-                    $form = new \PetStore\Entities\loan();
+                    $form = new \PetStore\Entities\Pet();
                     $form->setPetType("Dog");
                     $form->setName("Rex");
                     // set other fields
                     try {
-                        $loan = $client->pets()->create($form);
+                        $pet = $client->pets()->create($form);
                     } catch (UnprocessableEntityException $e) {
                         var_dump($e->getErrors());
                     }
@@ -574,21 +631,21 @@ paths:
                       properties:
                         orderId:
                           type: string
-                          example: "123"
+                          example: '123'
                         timestamp:
                           type: string
                           format: date-time
-                          example: "2018-10-19T16:46:45Z"
+                          example: '2018-10-19T16:46:45Z'
                         status:
                           type: string
-                          example: "inProgress"
+                          example: 'inProgress'
                   application/xml:
                     schema:
                       type: object
                       properties:
                         orderId:
                           type: string
-                          example: "123"
+                          example: '123'
                     example: |
                       <?xml version="1.0" encoding="UTF-8"?>
                       <root>
@@ -597,7 +654,7 @@ paths:
                         <timestamp>2018-10-19T16:46:45Z</timestamp>
                       </root>
               responses:
-                "200":
+                '200':
                   description: Callback successfully processed and no retries will be performed
                   content:
                     application/json:
@@ -606,9 +663,9 @@ paths:
                         properties:
                           someProp:
                             type: string
-                            example: "123"
+                            example: '123'
         orderShipped:
-          "{$request.body#/callbackUrl}?event={$request.body#/eventName}":
+          '{$request.body#/callbackUrl}?event={$request.body#/eventName}':
             post:
               description: |
                 Very long description
@@ -626,20 +683,20 @@ paths:
                       properties:
                         orderId:
                           type: string
-                          example: "123"
+                          example: '123'
                         timestamp:
                           type: string
                           format: date-time
-                          example: "2018-10-19T16:46:45Z"
+                          example: '2018-10-19T16:46:45Z'
                         estimatedDeliveryDate:
                           type: string
                           format: date-time
-                          example: "2018-11-11T16:00:00Z"
+                          example: '2018-11-11T16:00:00Z'
               responses:
-                "200":
+                '200':
                   description: Callback successfully processed and no retries will be performed
         orderDelivered:
-          "http://notificationServer.com?url={$request.body#/callbackUrl}&event={$request.body#/eventName}":
+          'http://notificationServer.com?url={$request.body#/callbackUrl}&event={$request.body#/eventName}':
             post:
               deprecated: true
               summary: Order delivered
@@ -652,13 +709,13 @@ paths:
                       properties:
                         orderId:
                           type: string
-                          example: "123"
+                          example: '123'
                         timestamp:
                           type: string
                           format: date-time
-                          example: "2018-10-19T16:46:45Z"
+                          example: '2018-10-19T16:46:45Z'
               responses:
-                "200":
+                '200':
                   description: Callback successfully processed and no retries will be performed
   /user:
     post:
@@ -674,36 +731,36 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/User"
+              $ref: '#/components/schemas/User'
         description: Created user object
         required: true
-  "/user/{username}":
+  '/user/{username}':
     get:
       tags:
         - user
       summary: Get user by user name
-      description: ""
+      description: ''
       operationId: getUserByName
       parameters:
         - name: username
           in: path
-          description: "The name that needs to be fetched. Use user1 for testing. "
+          description: 'The name that needs to be fetched. Use user1 for testing. '
           required: true
           schema:
             type: string
       responses:
-        "200":
+        '200':
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/User"
+                $ref: '#/components/schemas/User'
             application/xml:
               schema:
-                $ref: "#/components/schemas/User"
-        "400":
+                $ref: '#/components/schemas/User'
+        '400':
           description: Invalid username supplied
-        "404":
+        '404':
           description: User not found
     put:
       tags:
@@ -719,15 +776,15 @@ paths:
           schema:
             type: string
       responses:
-        "400":
+        '400':
           description: Invalid user supplied
-        "404":
+        '404':
           description: User not found
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/User"
+              $ref: '#/components/schemas/User'
         description: Updated user object
         required: true
     delete:
@@ -744,40 +801,40 @@ paths:
           schema:
             type: string
       responses:
-        "400":
+        '400':
           description: Invalid username supplied
-        "404":
+        '404':
           description: User not found
   /user/createWithArray:
     post:
       tags:
         - user
       summary: Creates list of users with given input array
-      description: ""
+      description: ''
       operationId: createUsersWithArrayInput
       responses:
         default:
           description: successful operation
       requestBody:
-        $ref: "#/components/requestBodies/UserArray"
+        $ref: '#/components/requestBodies/UserArray'
   /user/createWithList:
     post:
       tags:
         - user
       summary: Creates list of users with given input array
-      description: ""
+      description: ''
       operationId: createUsersWithListInput
       responses:
         default:
           description: successful operation
       requestBody:
-        $ref: "#/components/requestBodies/UserArray"
+        $ref: '#/components/requestBodies/UserArray'
   /user/login:
     get:
       tags:
         - user
       summary: Logs user into the system
-      description: ""
+      description: ''
       operationId: loginUser
       parameters:
         - name: username
@@ -793,7 +850,7 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           description: successful operation
           headers:
             X-Rate-Limit:
@@ -818,19 +875,19 @@ paths:
                 type: string
               examples:
                 response:
-                  value: <Message> OK </Message>
+                  value:  <Message> OK </Message>
             text/plain:
               examples:
                 response:
-                  value: OK
-        "400":
+                  value:  OK
+        '400':
           description: Invalid username/password supplied
   /user/logout:
     get:
       tags:
         - user
       summary: Logs out current logged in user session
-      description: ""
+      description: ''
       operationId: logoutUser
       responses:
         default:
@@ -850,7 +907,7 @@ components:
     Cat:
       description: A representation of a cat
       allOf:
-        - $ref: "#/components/schemas/loan"
+        - $ref: '#/components/schemas/Pet'
         - type: object
           properties:
             huntingSkill:
@@ -871,7 +928,7 @@ components:
         id:
           description: Category ID
           allOf:
-            - $ref: "#/components/schemas/Id"
+            - $ref: '#/components/schemas/Id'
         name:
           description: Category name
           type: string
@@ -888,7 +945,7 @@ components:
     Dog:
       description: A representation of a dog
       allOf:
-        - $ref: "#/components/schemas/loan"
+        - $ref: '#/components/schemas/Pet'
         - type: object
           properties:
             packSize:
@@ -902,7 +959,7 @@ components:
     HoneyBee:
       description: A representation of a honey bee
       allOf:
-        - $ref: "#/components/schemas/loan"
+        - $ref: '#/components/schemas/Pet'
         - type: object
           properties:
             honeyPerDay:
@@ -922,11 +979,11 @@ components:
         id:
           description: Order ID
           allOf:
-            - $ref: "#/components/schemas/Id"
+            - $ref: '#/components/schemas/Id'
         petId:
-          description: loan ID
+          description: Pet ID
           allOf:
-            - $ref: "#/components/schemas/Id"
+            - $ref: '#/components/schemas/Id'
         quantity:
           type: integer
           format: int32
@@ -954,7 +1011,7 @@ components:
           writeOnly: true
       xml:
         name: Order
-    loan:
+    Pet:
       type: object
       required:
         - name
@@ -962,27 +1019,27 @@ components:
       discriminator:
         propertyName: petType
         mapping:
-          cat: "#/components/schemas/Cat"
-          dog: "#/components/schemas/Dog"
-          bee: "#/components/schemas/HoneyBee"
+          cat: '#/components/schemas/Cat'
+          dog: '#/components/schemas/Dog'
+          bee: '#/components/schemas/HoneyBee'
       properties:
         id:
           externalDocs:
             description: "Find more info here"
             url: "https://example.com"
-          description: loan ID
+          description: Pet ID
           allOf:
-            - $ref: "#/components/schemas/Id"
+            - $ref: '#/components/schemas/Id'
         category:
-          description: Categories this loan belongs to
+          description: Categories this pet belongs to
           allOf:
-            - $ref: "#/components/schemas/Category"
+            - $ref: '#/components/schemas/Category'
         name:
-          description: The name given to a loan
+          description: The name given to a pet
           type: string
           example: Guru
         photoUrls:
-          description: The list of URL to a cute photos featuring loan
+          description: The list of URL to a cute photos featuring pet
           type: array
           maxItems: 20
           xml:
@@ -993,35 +1050,35 @@ components:
             format: url
         friend:
           allOf:
-            - $ref: "#/components/schemas/loan"
+            - $ref: '#/components/schemas/Pet'
         tags:
-          description: Tags attached to the loan
+          description: Tags attached to the pet
           type: array
           minItems: 1
           xml:
             name: tag
             wrapped: true
           items:
-            $ref: "#/components/schemas/Tag"
+            $ref: '#/components/schemas/Tag'
         status:
           type: string
-          description: loan status in the store
+          description: Pet status in the store
           enum:
             - available
             - pending
             - sold
         petType:
-          description: Type of a loan
+          description: Type of a pet
           type: string
       xml:
-        name: loan
+        name: Pet
     Tag:
       type: object
       properties:
         id:
           description: Tag ID
           allOf:
-            - $ref: "#/components/schemas/Id"
+            - $ref: '#/components/schemas/Id'
         name:
           description: Tag name
           type: string
@@ -1032,11 +1089,11 @@ components:
       type: object
       properties:
         id:
-          $ref: "#/components/schemas/Id"
-        loan:
+          $ref: '#/components/schemas/Id'
+        pet:
           oneOf:
-            - $ref: "#/components/schemas/loan"
-            - $ref: "#/components/schemas/Tag"
+            - $ref: '#/components/schemas/Pet'
+            - $ref: '#/components/schemas/Tag'
         username:
           description: User supplied username
           type: string
@@ -1064,7 +1121,7 @@ components:
             as well as digits
           format: password
           minLength: 8
-          pattern: "/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/"
+          pattern: '/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/'
           example: drowssaP123
         phone:
           description: User phone number in international format
@@ -1078,22 +1135,22 @@ components:
       xml:
         name: User
   requestBodies:
-    loan:
+    Pet:
       content:
         application/json:
           schema:
             allOf:
-              - description: My loan
+              - description: My Pet
                 title: Pettie
-              - $ref: "#/components/schemas/loan"
+              - $ref: '#/components/schemas/Pet'
         application/xml:
           schema:
-            type: "object"
+            type: 'object'
             properties:
               name:
                 type: string
                 description: hooray
-      description: loan object that needs to be added to the store
+      description: Pet object that needs to be added to the store
       required: true
     UserArray:
       content:
@@ -1101,7 +1158,7 @@ components:
           schema:
             type: array
             items:
-              $ref: "#/components/schemas/User"
+              $ref: '#/components/schemas/User'
       description: List of user object
       required: true
   securitySchemes:
@@ -1112,10 +1169,10 @@ components:
       type: oauth2
       flows:
         implicit:
-          authorizationUrl: "http://petstore.swagger.io/api/oauth/dialog"
+          authorizationUrl: 'http://petstore.swagger.io/api/oauth/dialog'
           scopes:
-            "write:pets": modify pets in your account
-            "read:pets": read your pets
+            'write:pets': modify pets in your account
+            'read:pets': read your pets
     api_key:
       description: >
         For this sample, you can use the api key `special-key` to test the
@@ -1127,22 +1184,22 @@ components:
     Order:
       value:
         quantity: 1
-        shipDate: "2018-10-19T16:46:45Z"
+        shipDate: '2018-10-19T16:46:45Z'
         status: placed
         complete: false
 x-webhooks:
   newPet:
     post:
-      summary: New loan
-      description: Information about a new loan in the systems
+      summary: New pet
+      description: Information about a new pet in the systems
       operationId: newPet
-      tags:
-        - loan
+      tags: 
+        - pet
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/loan"
+              $ref: "#/components/schemas/Pet"
       responses:
         "200":
           description: Return a 200 status to indicate that the data was received successfully
